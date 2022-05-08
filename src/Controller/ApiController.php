@@ -20,23 +20,29 @@ class ApiController extends AbstractController
     #[Route('/login', name: 'app_login')]
     public function login(): Response
     {
-        var_dump($_POST);
         
-        /**
-        $conn = pg_connect("host=localhost");
+        $conn = pg_connect("host=localhost port=5431 dbname=mac");
 
-        SELECT id, username, firstname, lastname, email, created_on, modify_on FROM public.accounts where email = 'kammoun.salem@gmail.com';
+        
+        $selectSqlCommand = "SELECT * FROM public.accounts where email = '".$_POST["email"]."' AND pass = '".$_POST["password"]."'";
+        
+        
 
-        $result = pg_query($conn, "SELECT datname FROM pg_database");
+        $result = pg_query($conn,$selectSqlCommand);
         while ($row = pg_fetch_row($result)) {
-            echo "<p>" . htmlspecialchars($row[0]) . "</p>\n";
+            
+            $_SESSION["admin"] = true;
+            return $this->json([
+                'message' => 'connected'
+            ]);
         }
-         */
- 
+        
+        
+        $_SESSION["admin"] = false;
         return $this->json([
-            'message' => '1111Welcome to your new controller!',
-            'path' => 'src/Controller/ApiController.php',
+            'message' => 'not-connected'
         ]);
+
     }
 
 }
