@@ -21,13 +21,13 @@ class ApiController extends AbstractController
     public function login(): Response
     {
         
+        
         $conn = pg_connect("host=localhost port=5431 dbname=mac");
 
         
-        $selectSqlCommand = "SELECT * FROM public.accounts where email = '".$_POST["email"]."' AND pass = '".$_POST["password"]."'";
+        $selectSqlCommand = "SELECT * FROM public.accounts where email = '".$_REQUEST["email"]."' AND pass = '".$_REQUEST["password"]."'";
         
         
-
         $result = pg_query($conn,$selectSqlCommand);
         while ($row = pg_fetch_row($result)) {
             
@@ -35,6 +35,7 @@ class ApiController extends AbstractController
             return $this->json([
                 'message' => 'connected'
             ]);
+            
         }
         
         

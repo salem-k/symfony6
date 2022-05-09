@@ -7,6 +7,7 @@
         "php": ">=8.0.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "nelmio/cors-bundle": "^2.2",
         "symfony/console": "6.0.*",
         "symfony/dotenv": "6.0.*",
         "symfony/flex": "^2",
@@ -15,6 +16,7 @@
         "symfony/yaml": "6.0.*"
     },
     "require-dev": {
+        "symfony/debug-bundle": "6.0.*",
         "symfony/maker-bundle": "^1.41"
     },
     "config": {
