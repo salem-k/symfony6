@@ -23,21 +23,25 @@ class ApiController extends AbstractController
     public function login(): Response
     {
         $request = Request::createFromGlobals();
-        
-        $conn = pg_connect("host=localhost port=5431 dbname=mac");
 
+        $conn = pg_connect("host=localhost port=5431 dbname=mac");
         
-        $selectSqlCommand = "SELECT * FROM public.accounts where email = '".$request->query->get('email')."' AND pass = '".$request->query->get('password')."'";
+        
+        $myRequest = json_decode($request->getContent());
+
+
+        $selectSqlCommand = "SELECT * FROM public.accounts where email = '".$myRequest->email."' AND pass = '".$myRequest->password."'";
         
         
         $result = pg_query($conn,$selectSqlCommand);
+        //echo $selectSqlCommand;
         while ($row = pg_fetch_row($result)) {
-            
+            //echo $row;
             $_SESSION["admin"] = true;
             return $this->json([
                 'message' => 'connected'
             ]);
-            
+            die;
         }
         
         
