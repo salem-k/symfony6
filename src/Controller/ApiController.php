@@ -30,21 +30,22 @@ class ApiController extends AbstractController
         $myRequest = json_decode($request->getContent());
 
 
-        move_uploaded_file($request->query->get("files"), $this->getParameter('uploads_dir') );
-
-
+        $videoFilename = md5(uniqid());
         foreach($request->files as $uploadedFile) {
-
-            $uploadedFile->move( $this->getParameter('uploads_dir'), md5(uniqid()) );
-            
-
-            echo "yess";
+            $uploadedFile->move( $this->getParameter('uploads_dir'), $videoFilename );
         }
         
-        //move_uploaded_file($myRequest->videofile,'public/'.$myRequest->pubid);
-        
 
-        
+        $conn = pg_connect("host=localhost port=5431 dbname=mac");
+        $selectSqlCommand = "SELECT id_video, title, duration, path, created_on, modify_on FROM public.video ORDER BY id_video DESC limit 1";
+        $result = pg_query($conn,$selectSqlCommand);
+        $row = pg_fetch_row($result);
+
+        $insertSqlCommand = "INSERT INTO public.video(id_video, title, duration, path, created_on, modify_on) VALUES ($row[0]+1, '".$request->request->all()["npmduprojet"]."', 100, '".$videoFilename."', current_timestamp, current_timestamp);";
+
+echo $insertSqlCommand;
+
+        $result = pg_query($conn,$insertSqlCommand);
         
         return $this->json([
             'message' => 'Welcome to your new controller!',
