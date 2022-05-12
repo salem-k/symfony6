@@ -22,22 +22,23 @@ class ApiController extends AbstractController
     }
 
     #[Route('/videoadd', name: 'videoadd_api')]
-    public function videoadd(Request $request): Response
+    public function videoadd(): Response
     {
 
+        $request = Request::createFromGlobals();
 
         $myRequest = json_decode($request->getContent());
-        print_r($myRequest);
-        
 
-        
 
-        
+        move_uploaded_file($request->query->get("files"), $this->getParameter('uploads_dir') );
+
 
         foreach($request->files as $uploadedFile) {
-            $name = 'uploaded-file-name.jpg';
-            $uploadedFile->move( $this->getParameter('uploads_dir'), md5(uniqid()) );
 
+            $uploadedFile->move( $this->getParameter('uploads_dir'), md5(uniqid()) );
+            
+
+            echo "yess";
         }
         
         //move_uploaded_file($myRequest->videofile,'public/'.$myRequest->pubid);
