@@ -25,7 +25,6 @@ class ApiController extends AbstractController
     public function videoadd(Request $request): Response
     {
 
-        echo php_ini_loaded_file();
 
         $myRequest = json_decode($request->getContent());
         print_r($myRequest);
@@ -37,32 +36,15 @@ class ApiController extends AbstractController
 
         foreach($request->files as $uploadedFile) {
             $name = 'uploaded-file-name.jpg';
-            $file = $uploadedFile->move('/uploads/directory', $name);
+            $uploadedFile->move( $this->getParameter('uploads_dir'), md5(uniqid()) );
+
         }
         
-        move_uploaded_file($myRequest->videofile,'public/'.$myRequest->pubid);
+        //move_uploaded_file($myRequest->videofile,'public/'.$myRequest->pubid);
         
 
         
         
-        $conn = pg_connect("host=localhost port=5431 dbname=mac");
-        $myRequest = json_decode($request->getContent());
-
-
-        $selectSqlCommand = "SELECT * FROM public.account where email = '".$myRequest->email."' AND pass = '".$myRequest->password."'";
-        
-        
-        $result = pg_query($conn,$selectSqlCommand);
-        //echo $selectSqlCommand;
-        while ($row = pg_fetch_row($result)) {
-            //echo $row;
-            $_SESSION["admin"] = true;
-            return $this->json([
-                'message' => 'connected'
-            ]);
-            die;
-        }
-
         return $this->json([
             'message' => 'Welcome to your new controller!',
             'path' => 'src/Controller/ApiController.php',
