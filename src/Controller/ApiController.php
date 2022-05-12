@@ -43,7 +43,7 @@ class ApiController extends AbstractController
 
         $insertSqlCommand = "INSERT INTO public.video(id_video, title, duration, path, created_on, modify_on) VALUES ($row[0]+1, '".$request->request->all()["npmduprojet"]."', 100, '".$videoFilename."', current_timestamp, current_timestamp);";
 
-echo $insertSqlCommand;
+
 
         $result = pg_query($conn,$insertSqlCommand);
         
