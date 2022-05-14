@@ -36,7 +36,7 @@ class ApiController extends AbstractController
         }
         
 
-        $conn = pg_connect("host=localhost port=5431 dbname=mac");
+        $conn = pg_connect("host=localhost port=5431 dbname=mac5");
         $selectSqlCommand = "SELECT id_video, title, duration, path, created_on, modify_on FROM public.video ORDER BY id_video DESC limit 1";
         $result = pg_query($conn,$selectSqlCommand);
         $row = pg_fetch_row($result);
@@ -65,7 +65,7 @@ class ApiController extends AbstractController
         }
         
 
-        $conn = pg_connect("host=localhost port=5431 dbname=mac");
+        $conn = pg_connect("host=localhost port=5431 dbname=mac5");
         $selectSqlCommand = "SELECT id_video, title, duration, path, created_on, modify_on FROM public.video ORDER BY id_video DESC limit 1";
         $result = pg_query($conn,$selectSqlCommand);
         $row = pg_fetch_row($result);
@@ -86,13 +86,8 @@ class ApiController extends AbstractController
     public function login(): Response
     {
         $request = Request::createFromGlobals();
-
-        $conn = pg_connect("host=localhost port=5431 dbname=mac");
-        
-        
+        $conn = pg_connect("host=localhost port=5431 dbname=mac5");
         $myRequest = json_decode($request->getContent());
-
-
         $selectSqlCommand = "SELECT * FROM public.account where email = '".$myRequest->email."' AND pass = '".$myRequest->password."'";
         
         
