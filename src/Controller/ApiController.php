@@ -25,6 +25,7 @@ class ApiController extends AbstractController
     public function uploadbackground(): Response
     {
 
+
         $request = Request::createFromGlobals();
 
         $myRequest = json_decode($request->getContent());
@@ -35,14 +36,6 @@ class ApiController extends AbstractController
             $uploadedFile->move( $this->getParameter('uploads_dir_background'), $backgroundFileName );
         }
         
-
-        $conn = pg_connect("host=localhost port=5431 dbname=mac5");
-        $selectSqlCommand = "SELECT id_video, title, duration, path, created_on, modify_on FROM public.video ORDER BY id_video DESC limit 1";
-        $result = pg_query($conn,$selectSqlCommand);
-        $row = pg_fetch_row($result);
-
-        //$insertSqlCommand = "INSERT INTO public.video(id_video, title, duration, path, created_on, modify_on) VALUES ($row[0]+1, '".$request->request->all()["nomduprojet"]."', 100, '".$videoFilename."', current_timestamp, current_timestamp);";
-        //$result = pg_query($conn,$insertSqlCommand);
         
         return $this->json([
             'message' => 'Welcome to your new controller!',
@@ -66,13 +59,16 @@ class ApiController extends AbstractController
         
 
         $conn = pg_connect("host=localhost port=5431 dbname=mac5");
-        $selectSqlCommand = "SELECT id_video, title, duration, path, created_on, modify_on FROM public.video ORDER BY id_video DESC limit 1";
+        $selectSqlCommand = "SELECT id, title, duration, path, created_on, modify_on FROM public.video ORDER BY id DESC limit 1";
         $result = pg_query($conn,$selectSqlCommand);
         $row = pg_fetch_row($result);
+        
+        if (!$row) 
+            $row[0] = 0;
+        
+        
 
-        $insertSqlCommand = "INSERT INTO public.video(id_video, title, duration, path, created_on, modify_on) VALUES ($row[0]+1, '".$request->request->all()["nomduprojet"]."', 100, '".$videoFilename."', current_timestamp, current_timestamp);";
-
-
+        $insertSqlCommand = "INSERT INTO public.video(id, title, duration, path, created_on, modify_on) VALUES ($row[0]+1, '".$request->request->all()["nomduprojet"]."', 100, '".$videoFilename."', current_timestamp, current_timestamp);";
 
         $result = pg_query($conn,$insertSqlCommand);
         
@@ -95,11 +91,16 @@ class ApiController extends AbstractController
         //echo $selectSqlCommand;
         while ($row = pg_fetch_row($result)) {
             //echo $row;
-            $_SESSION["admin"] = true;
+            $_SESSION["admin"] = $row;
             return $this->json([
-                'message' => 'connected'
+                
+                "id"=>$row[0],
+                "username"=>$row[1],
+                "firstname"=> $row[2],
+                "lastname"=>$row[3],
+                "email"=>$row[4]
             ]);
-            die;
+            
         }
         
         
