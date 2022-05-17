@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\Video;
+use App\Entity\Account;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,6 +12,8 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Doctrine\Persistence\ManagerRegistry;
 class ApiController extends AbstractController
 {
     #[Route('/api', name: 'app_api')]
@@ -22,8 +26,9 @@ class ApiController extends AbstractController
     }
 
     #[Route('/uploadbackground', name: 'uploadbackground_api')]
-    public function uploadbackground(): Response
+    public function uploadbackground(ManagerRegistry $doctrine): Response
     {
+
 
 
         $request = Request::createFromGlobals();
@@ -35,7 +40,7 @@ class ApiController extends AbstractController
         foreach($request->files as $uploadedFile) {
             $uploadedFile->move( $this->getParameter('uploads_dir_background'), $backgroundFileName );
         }
-        
+
         
         return $this->json([
             'message' => 'Welcome to your new controller!',
@@ -44,7 +49,7 @@ class ApiController extends AbstractController
     }
     
     #[Route('/videoadd', name: 'videoadd_api')]
-    public function videoadd(): Response
+    public function videoadd(ManagerRegistry $doctrine): Response
     {
 
         $request = Request::createFromGlobals();
@@ -58,7 +63,29 @@ class ApiController extends AbstractController
         }
         
 
-        $conn = pg_connect("host=localhost port=5431 dbname=mac5");
+        $entityManager = $doctrine->getManager();
+        
+
+        // This method returns instead the "customer" entity manager
+        //$customerEntityManager = $doctrine->getManager('customer');
+
+
+        $conn = pg_connect("host=localhost port=5431 dbname=mac7");
+
+        $date = new \DateTime();
+        $video = new Video();
+        $video->setTitle('Computer Peripherals');
+        $video->setDuration('300');
+        $video->setPath('dasdasds');
+        $video->getCreatedOn($date->getTimestamp());
+        $video->getModifyOn($date->getTimestamp());
+        
+        $entityManager->persist($video);
+        $entityManager->flush();
+        
+        
+
+
         $selectSqlCommand = "SELECT id, title, duration, path, created_on, modify_on FROM public.video ORDER BY id DESC limit 1";
         $result = pg_query($conn,$selectSqlCommand);
         $row = pg_fetch_row($result);
@@ -82,7 +109,7 @@ class ApiController extends AbstractController
     public function login(): Response
     {
         $request = Request::createFromGlobals();
-        $conn = pg_connect("host=localhost port=5431 dbname=mac5");
+        $conn = pg_connect("host=localhost port=5431 dbname=mac7");
         $myRequest = json_decode($request->getContent());
         $selectSqlCommand = "SELECT * FROM public.account where email = '".$myRequest->email."' AND pass = '".$myRequest->password."'";
         

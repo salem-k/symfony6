@@ -42,6 +42,11 @@ class Video
      */
     private $modify_on;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=account::class, inversedBy="video")
+     */
+    private $account_id;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +108,18 @@ class Video
     public function setModifyOn(?\DateTimeInterface $modify_on): self
     {
         $this->modify_on = $modify_on;
+
+        return $this;
+    }
+
+    public function getAccountId(): ?account
+    {
+        return $this->account_id;
+    }
+
+    public function setAccountId(?account $account_id): self
+    {
+        $this->account_id = $account_id;
 
         return $this;
     }

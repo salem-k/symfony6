@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AccountRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -47,6 +49,23 @@ class Account
      */
     private $modify_on;
 
+    
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="account_id")
+     */
+    private $videos;
+
+
+    public function __construct()
+    {
+        $this->videos = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -72,6 +91,19 @@ class Account
     public function setFirstname(?string $firstname): self
     {
         $this->firstname = $firstname;
+
+        return $this;
+    }
+
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(?string $password): self
+    {
+        $this->password = $password;
 
         return $this;
     }
@@ -123,4 +155,35 @@ class Account
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, video>
+     */
+    public function getVideos(): Collection
+    {
+        return $this->videos;
+    }
+
+    public function addVideo(video $video): self
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos[] = $video;
+            $video->setAccount($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(video $video): self
+    {
+        if ($this->videos->removeElement($video)) {
+            // set the owning side to null (unless already changed)
+            if ($video->getAccount() === $this) {
+                $video->setAccount(null);
+            }
+        }
+
+        return $this;
+    }
+    
 }
