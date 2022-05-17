@@ -46,6 +46,7 @@ class Video
      * @ORM\ManyToOne(targetEntity=account::class, inversedBy="video")
      */
     private $account;
+    
 
     public function getId(): ?int
     {

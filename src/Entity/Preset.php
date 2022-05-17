@@ -21,6 +21,16 @@ class Preset
      * @ORM\Column(type="string", length=255)
      */
     private $name;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity=preset::class, inversedBy="video")
+     */
+    private $video;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Presetline::class, mappedBy="preset_id")
+     */
+    private $presetlines;
 
     public function getId(): ?int
     {

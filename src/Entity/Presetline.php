@@ -26,7 +26,12 @@ class Presetline
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $value;
-
+    
+    /**
+     * @ORM\ManyToOne(targetEntity=preset::class, inversedBy="preset")
+     */
+    private $preset;
+    
     public function getId(): ?int
     {
         return $this->id;

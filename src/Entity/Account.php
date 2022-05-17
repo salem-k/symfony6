@@ -60,6 +60,10 @@ class Account
      */
     private $videos;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Adress::class, mappedBy="account_id")
+     */
+    private $adresss;
 
     public function __construct()
     {

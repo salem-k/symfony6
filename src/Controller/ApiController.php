@@ -52,6 +52,10 @@ class ApiController extends AbstractController
     public function videoadd(ManagerRegistry $doctrine): Response
     {
 
+        session_start();
+
+        print_r($_SESSION);
+
         $request = Request::createFromGlobals();
 
         $myRequest = json_decode($request->getContent());
@@ -85,7 +89,7 @@ class ApiController extends AbstractController
         
         
 
-
+/*
         $selectSqlCommand = "SELECT id, title, duration, path, created_on, modify_on FROM public.video ORDER BY id DESC limit 1";
         $result = pg_query($conn,$selectSqlCommand);
         $row = pg_fetch_row($result);
@@ -98,7 +102,7 @@ class ApiController extends AbstractController
         $insertSqlCommand = "INSERT INTO public.video(id, title, duration, path, created_on, modify_on) VALUES ($row[0]+1, '".$request->request->all()["nomduprojet"]."', 100, '".$videoFilename."', current_timestamp, current_timestamp);";
 
         $result = pg_query($conn,$insertSqlCommand);
-        
+*/        
         return $this->json([
             'message' => 'Welcome to your new controller!',
             'path' => 'src/Controller/ApiController.php',
