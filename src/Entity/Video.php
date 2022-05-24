@@ -43,9 +43,9 @@ class Video
     private $modify_on;
 
     /**
-     * @ORM\ManyToOne(targetEntity=account::class, inversedBy="video")
+     * @ORM\ManyToOne(targetEntity=user::class, inversedBy="video")
      */
-    private $account;
+    private $user;
     
 
     public function getId(): ?int
@@ -113,14 +113,14 @@ class Video
         return $this;
     }
 
-    public function getAccountId(): ?account
+    public function getUserId(): ?user
     {
-        return $this->account_id;
+        return $this->user_id;
     }
 
-    public function setAccountId(?account $account_id): self
+    public function setUserId(?user $user_id): self
     {
-        $this->account_id = $account_id;
+        $this->user_id = $user_id;
 
         return $this;
     }

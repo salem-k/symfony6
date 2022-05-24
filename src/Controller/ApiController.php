@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 use App\Entity\Video;
-use App\Entity\Account;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,10 +51,6 @@ class ApiController extends AbstractController
     #[Route('/videoadd', name: 'videoadd_api')]
     public function videoadd(ManagerRegistry $doctrine): Response
     {
-
-        session_start();
-
-        print_r($_SESSION);
 
         $request = Request::createFromGlobals();
 
@@ -115,7 +111,7 @@ class ApiController extends AbstractController
         $request = Request::createFromGlobals();
         $conn = pg_connect("host=localhost port=5431 dbname=mac7");
         $myRequest = json_decode($request->getContent());
-        $selectSqlCommand = "SELECT * FROM public.account where email = '".$myRequest->email."' AND pass = '".$myRequest->password."'";
+        $selectSqlCommand = "SELECT * FROM account where email = '".$myRequest->email."' AND pass = '".$myRequest->password."'";
         
         
         $result = pg_query($conn,$selectSqlCommand);

@@ -38,9 +38,9 @@ class Adress
     private $city;
 
     /**
-     * @ORM\ManyToOne(targetEntity=account::class, inversedBy="adress")
+     * @ORM\ManyToOne(targetEntity=user::class, inversedBy="adress")
      */
-    private $account;
+    private $user;
 
     public function getId(): ?int
     {
