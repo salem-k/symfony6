@@ -41,10 +41,10 @@ class ApiController extends AbstractController
             $uploadedFile->move( $this->getParameter('uploads_dir_background'), $backgroundFileName );
         }
 
+
         
         return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/ApiController.php',
+            'background' => $backgroundFileName
         ]);
     }
     
@@ -83,7 +83,9 @@ class ApiController extends AbstractController
         $entityManager->persist($video);
         $entityManager->flush();
         
-        
+        return $this->json([
+            'video' => $videoFilename
+        ]);
 
 /*
         $selectSqlCommand = "SELECT id, title, duration, path, created_on, modify_on FROM public.video ORDER BY id DESC limit 1";
@@ -99,10 +101,6 @@ class ApiController extends AbstractController
 
         $result = pg_query($conn,$insertSqlCommand);
 */        
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/ApiController.php',
-        ]);
     }
 
     #[Route('/login', name: 'app_login')]
