@@ -76,7 +76,7 @@ class ApiController extends AbstractController
         $video = new Video();
         $video->setTitle('Computer Peripherals');
         $video->setDuration('300');
-        $video->setPath('dasdasds');
+        $video->setPath($videoFilename);
         $video->getCreatedOn($date->getTimestamp());
         $video->getModifyOn($date->getTimestamp());
         
