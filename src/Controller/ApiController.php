@@ -84,7 +84,8 @@ class ApiController extends AbstractController
         $entityManager->flush();
         
         return $this->json([
-            'video' => $videoFilename
+            'video' => $videoFilename,
+            'id' => $video->getId()
         ]);
 
 /*
