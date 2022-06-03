@@ -56,6 +56,7 @@ class ApiController extends AbstractController
 
         $myRequest = json_decode($request->getContent());
 
+        
 
         $videoFilename = md5(uniqid());
         foreach($request->files as $uploadedFile) {
@@ -74,12 +75,13 @@ class ApiController extends AbstractController
 
         $date = new \DateTime();
         $video = new Video();
-        $video->setTitle('Computer Peripherals');
+        $video->setTitle($request->query->get('nomduprojet'));
         $video->setDuration('300');
         $video->setPath($videoFilename);
         $video->getCreatedOn($date->getTimestamp());
         $video->getModifyOn($date->getTimestamp());
-        
+        $video->setUserId($request->query->get('user_id'));
+        //sss
         $entityManager->persist($video);
         $entityManager->flush();
         
