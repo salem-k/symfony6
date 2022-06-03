@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 use App\Entity\Video;
+use App\Entity\Preset;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -48,6 +49,56 @@ class ApiController extends AbstractController
         ]);
     }
     
+    #[Route('/savepersets', name: 'savepersets_api')]
+    public function savepersets(ManagerRegistry $doctrine): Response
+    {
+
+        $request = Request::createFromGlobals();
+        $myRequest = json_decode($request->getContent());
+
+        $entityManager = $doctrine->getManager();
+
+        
+            $date = new \DateTime();
+            $persets = json_decode(json_encode($myRequest->persets), true);
+
+            var_dump($persets);
+        
+            foreach ($persets as &$value) {
+                $perset = new Preset();
+                $perset->setName($value["col1"]);
+                $perset->setVideoId($request->query->get('video_id'));
+                $perset->setData($value["col2"]);
+                $perset->setColor($value["col3"]);
+                $perset->setForecolor($value["col4"]);
+                $perset->setFontsize($value["col5"]);
+                //$perset->setPositionx($value["col6"]);
+                //$perset->setPositiony($value["col7"]);
+                $entityManager->persist($perset);
+                $entityManager->flush();
+            }
+
+
+
+
+
+            
+
+
+
+
+
+
+
+
+
+
+
+        
+        return $this->json([
+            'success' => 1,
+        ]);
+    }
     #[Route('/videoadd', name: 'videoadd_api')]
     public function videoadd(ManagerRegistry $doctrine): Response
     {
@@ -65,13 +116,9 @@ class ApiController extends AbstractController
         
 
         $entityManager = $doctrine->getManager();
+
+
         
-
-        // This method returns instead the "customer" entity manager
-        //$customerEntityManager = $doctrine->getManager('customer');
-
-
-        $conn = pg_connect("host=localhost port=5431 dbname=mac7");
 
         $date = new \DateTime();
         $video = new Video();

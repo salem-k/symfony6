@@ -32,6 +32,36 @@ class Preset
      */
     private $presetlines;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $data;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $color;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $forecolor;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $fontsize;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $positionx;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $positiony;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +75,84 @@ class Preset
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+    public function setVideoId(?user $video_id): self
+    {
+        $this->video_id = $video_id;
+
+        return $this;
+    }
+
+    public function getData(): ?string
+    {
+        return $this->data;
+    }
+
+    public function setData(?string $data): self
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): self
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    public function getForecolor(): ?string
+    {
+        return $this->forecolor;
+    }
+
+    public function setForecolor(?string $forecolor): self
+    {
+        $this->forecolor = $forecolor;
+
+        return $this;
+    }
+
+    public function getFontsize(): ?string
+    {
+        return $this->fontsize;
+    }
+
+    public function setFontsize(?string $fontsize): self
+    {
+        $this->fontsize = $fontsize;
+
+        return $this;
+    }
+
+    public function getPositionx(): ?int
+    {
+        return $this->positionx;
+    }
+
+    public function setPositionx(?int $positionx): self
+    {
+        $this->positionx = $positionx;
+
+        return $this;
+    }
+
+    public function getPositiony(): ?int
+    {
+        return $this->positiony;
+    }
+
+    public function setPositiony(?int $positiony): self
+    {
+        $this->positiony = $positiony;
 
         return $this;
     }
