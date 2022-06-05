@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Entity;
-
+use Doctrine\Common\Collections\ArrayCollection;
 use App\Repository\PresetRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,11 +22,6 @@ class Preset
      * @ORM\Column(type="string", length=255)
      */
     private $name;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity=preset::class, inversedBy="video")
-     */
-    private $video;
 
     /**
      * @ORM\OneToMany(targetEntity=Presetline::class, mappedBy="preset_id")
@@ -62,6 +58,16 @@ class Preset
      */
     private $positiony;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=video::class, inversedBy="video_id")
+     */
+    private $video;
+
+    public function __construct()
+    {
+        $this->presetlines = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -78,13 +84,6 @@ class Preset
 
         return $this;
     }
-    public function setVideoId(?user $video_id): self
-    {
-        $this->video_id = $video_id;
-
-        return $this;
-    }
-
     public function getData(): ?string
     {
         return $this->data;
@@ -156,4 +155,47 @@ class Preset
 
         return $this;
     }
+
+    public function getVideo(): ?video
+    {
+        return $this->video;
+    }
+
+    public function setVideo(?video $video): self
+    {
+        $this->video = $video;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Presetline>
+     */
+    public function getPresetlines(): Collection
+    {
+        return $this->presetlines;
+    }
+
+    public function addPresetline(Presetline $presetline): self
+    {
+        if (!$this->presetlines->contains($presetline)) {
+            $this->presetlines[] = $presetline;
+            $presetline->setPresetId($this);
+        }
+
+        return $this;
+    }
+
+    public function removePresetline(Presetline $presetline): self
+    {
+        if ($this->presetlines->removeElement($presetline)) {
+            // set the owning side to null (unless already changed)
+            if ($presetline->getPresetId() === $this) {
+                $presetline->setPresetId(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

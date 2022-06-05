@@ -61,13 +61,17 @@ class ApiController extends AbstractController
         
             $date = new \DateTime();
             $persets = json_decode(json_encode($myRequest->persets), true);
+            
+            $repository = $doctrine->getRepository(Video::class);
 
-            var_dump($persets);
+            $video = $repository->findOneById($myRequest->video_id);
+
+
         
             foreach ($persets as &$value) {
                 $perset = new Preset();
                 $perset->setName($value["col1"]);
-                $perset->setVideoId($request->query->get('video_id'));
+                $perset->setVideo($video);
                 $perset->setData($value["col2"]);
                 $perset->setColor($value["col3"]);
                 $perset->setForecolor($value["col4"]);
@@ -78,23 +82,6 @@ class ApiController extends AbstractController
                 $entityManager->flush();
             }
 
-
-
-
-
-            
-
-
-
-
-
-
-
-
-
-
-
-        
         return $this->json([
             'success' => 1,
         ]);
@@ -117,9 +104,6 @@ class ApiController extends AbstractController
 
         $entityManager = $doctrine->getManager();
 
-
-        
-
         $date = new \DateTime();
         $video = new Video();
         $video->setTitle($request->query->get('nomduprojet'));
@@ -127,7 +111,7 @@ class ApiController extends AbstractController
         $video->setPath($videoFilename);
         $video->getCreatedOn($date->getTimestamp());
         $video->getModifyOn($date->getTimestamp());
-        $video->setUserId($request->query->get('user_id'));
+        $video->setUser($request->query->get('user_id'));
         //sss
         $entityManager->persist($video);
         $entityManager->flush();

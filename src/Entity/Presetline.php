@@ -60,4 +60,16 @@ class Presetline
 
         return $this;
     }
+
+    public function getPreset(): ?preset
+    {
+        return $this->preset;
+    }
+
+    public function setPreset(?preset $preset): self
+    {
+        $this->preset = $preset;
+
+        return $this;
+    }
 }
