@@ -62,25 +62,26 @@ class ApiController extends AbstractController
             $date = new \DateTime();
             $persets = json_decode(json_encode($myRequest->persets), true);
             
+            print_r($persets);
             $repository = $doctrine->getRepository(Video::class);
 
             $video = $repository->findOneById($myRequest->video_id);
 
 
         
-            foreach ($persets as &$value) {
+            foreach ($persets as $perseTemp ) {
                 $perset = new Preset();
-                $perset->setName($value["col1"]);
+                $perset->setName($perseTemp["col1"]);
                 $perset->setVideo($video);
-                $perset->setData($value["col2"]);
-                $perset->setColor($value["col3"]);
-                $perset->setForecolor($value["col4"]);
-                $perset->setFontsize($value["col5"]);
-                if(isset($value["x"])) {
-                    $perset->setPosx($value["x"]);
+                $perset->setData($perseTemp["col2"]);
+                $perset->setColor($perseTemp["col3"]);
+                $perset->setForecolor($perseTemp["col4"]);
+                $perset->setFontsize($perseTemp["col5"]);
+                if(isset($perseTemp["x"])) {
+                    $perset->setPosx($perseTemp["x"]);
                 }
-                if(isset($value["y"])) {
-                    $perset->setPosy($value["y"]);
+                if(isset($perseTemp["y"])) {
+                    $perset->setPosy($perseTemp["y"]);
                 }
                 //$perset->setPositionx($value["col6"]);
                 //$perset->setPositiony($value["col7"]);

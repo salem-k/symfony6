@@ -49,16 +49,6 @@ class Preset
     private $fontsize;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $positionx;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $positiony;
-
-    /**
      * @ORM\ManyToOne(targetEntity=video::class, inversedBy="video_id")
      */
     private $video;
@@ -138,30 +128,6 @@ class Preset
     public function setFontsize(?string $fontsize): self
     {
         $this->fontsize = $fontsize;
-
-        return $this;
-    }
-
-    public function getPositionx(): ?int
-    {
-        return $this->positionx;
-    }
-
-    public function setPositionx(?int $positionx): self
-    {
-        $this->positionx = $positionx;
-
-        return $this;
-    }
-
-    public function getPositiony(): ?int
-    {
-        return $this->positiony;
-    }
-
-    public function setPositiony(?int $positiony): self
-    {
-        $this->positiony = $positiony;
 
         return $this;
     }
