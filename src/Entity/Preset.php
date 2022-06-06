@@ -63,6 +63,16 @@ class Preset
      */
     private $video;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $posx;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $posy;
+
     public function __construct()
     {
         $this->presetlines = new ArrayCollection();
@@ -194,6 +204,30 @@ class Preset
                 $presetline->setPresetId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPosx(): ?int
+    {
+        return $this->posx;
+    }
+
+    public function setPosx(?int $posx): self
+    {
+        $this->posx = $posx;
+
+        return $this;
+    }
+
+    public function getPosy(): ?int
+    {
+        return $this->posy;
+    }
+
+    public function setPosy(?int $posy): self
+    {
+        $this->posy = $posy;
 
         return $this;
     }

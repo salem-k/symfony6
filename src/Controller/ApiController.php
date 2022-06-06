@@ -76,6 +76,12 @@ class ApiController extends AbstractController
                 $perset->setColor($value["col3"]);
                 $perset->setForecolor($value["col4"]);
                 $perset->setFontsize($value["col5"]);
+                if(isset($value["x"])) {
+                    $perset->setPosx($value["x"]);
+                }
+                if(isset($value["y"])) {
+                    $perset->setPosy($value["y"]);
+                }
                 //$perset->setPositionx($value["col6"]);
                 //$perset->setPositiony($value["col7"]);
                 $entityManager->persist($perset);
@@ -106,12 +112,12 @@ class ApiController extends AbstractController
 
         $date = new \DateTime();
         $video = new Video();
-        $video->setTitle($request->query->get('nomduprojet'));
+        $video->setTitle($myRequest->nomduprojet);
         $video->setDuration('300');
         $video->setPath($videoFilename);
         $video->getCreatedOn($date->getTimestamp());
         $video->getModifyOn($date->getTimestamp());
-        $video->setUser($request->query->get('user_id'));
+        $video->setIdu($myRequest->user_id);
         //sss
         $entityManager->persist($video);
         $entityManager->flush();

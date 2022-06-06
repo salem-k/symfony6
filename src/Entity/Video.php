@@ -44,24 +44,24 @@ class Video
      */
     private $modify_on;
 
+
     /**
-     * @ORM\ManyToOne(targetEntity=user::class, inversedBy="user_id")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $user;
+    private $idu;
 
 
-    public function getUser(): ?user
+    public function getIdu(): ?string
     {
-        return $this->user;
+        return $this->idu;
     }
 
-    public function setUser(?user $user): self
+    public function setIdu(?string $idu): self
     {
-        $this->user = $user;
+        $this->idu = $idu;
 
         return $this;
     }
-
     public function getId(): ?int
     {
         return $this->id;
